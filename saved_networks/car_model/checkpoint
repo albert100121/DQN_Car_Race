@@ -1,6 +1,0 @@
-model_checkpoint_path: "car-dqn-3820000"
-all_model_checkpoint_paths: "car-dqn-3780000"
-all_model_checkpoint_paths: "car-dqn-3790000"
-all_model_checkpoint_paths: "car-dqn-3800000"
-all_model_checkpoint_paths: "car-dqn-3810000"
-all_model_checkpoint_paths: "car-dqn-3820000"
