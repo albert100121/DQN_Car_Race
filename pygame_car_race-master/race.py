@@ -2,8 +2,6 @@ import pygame
 import random
 import time
 from PIL import Image
-
-
 # new import 
 import pygame.surfarray as surfarray
 import sys 
@@ -11,16 +9,12 @@ import random
 from pygame.locals import *
 from itertools import cycle
 
-
-
-
 pygame.init()
 
 display_width = 800
 display_height = 600
 #display_width = 288
 #display_height = 512
-
 
 game_window_size = (display_width, display_height)
 
@@ -53,7 +47,6 @@ class Game:
         self.obstacle_speed = 10
         self.obstacle_width = 100
         self.obstacle_height = 100
-        self.score = 0
         #self._is_crash = False      # set is crash to false to restart
     
     def draw_car(self, x ,y):
@@ -96,57 +89,6 @@ class Game:
                 return True
 
         return False
-    """    
-    def game_loop(self,deep_action):
-        game_exit = False
-
-        self.__init__()
-
-        while not game_exit:
-            
-            for event in pygame.event.get():
-                # Condition to quit
-                if event.type == pygame.QUIT:
-                    # pygame.quit()
-                    # quit()
-                    game_exit = True
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        # Move left
-                        self.actions[self.PLAYER_LEFT_MOVE] = 1
-                        self.actions[self.PLAYER_RIGHT_MOVE] = 0
-                        self.playerx_displacement = -5
-                    elif event.key == pygame.K_RIGHT:
-                        # Move right
-                        self.actions[self.PLAYER_LEFT_MOVE] = 0
-                        self.actions[self.PLAYER_RIGHT_MOVE] = 1
-                        self.playerx_displacement = 5
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                        # Dont move
-                        self.actions[self.PLAYER_LEFT_MOVE] = 0
-                        self.actions[self.PLAYER_RIGHT_MOVE] = 0
-                        self.playerx_displacement = 0
-            
-            if deep_action != 0:
-                if deep_action == 1:
-                    self.actions[self.PLAYER_LEFT_MOVE] = 1
-                    self.actions[self.PLAYER_RIGHT_MOVE]=0
-                    self.playerx_displacement = -5
-                elif deep actions == 2:
-                    self.actions[self.PLAYER_LEFT_MOVE] = 0
-                    self.actions[self.PLAYER_RIGHT_MOVE] = 1
-                    self.playerx_displacement = 5
-            if deep_action == 0:
-                self.actions[self.PLAYER_LEFT_MOVE] = 0
-                self.actions[self.PLAYER_RIGHT_MOVE] = 0
-                self.playerx_displacement = 0  
-            self.frame(1)
-        pygame.quit()
-        quit()
-    """
     #def frame(self, input_actions):
     def frame(self, deep_action):
         terminal = False
@@ -167,10 +109,6 @@ class Game:
 #        pygame.quit()
 #        quit()
 
-
-
-
-
         self.playerx += self.playerx_displacement
         #terminal = False
         SCREEN.fill(white)
@@ -178,8 +116,12 @@ class Game:
         self.draw_things(self.obstacle_startx, self.obstacle_starty, self.obstacle_width, self.obstacle_height, black)
         self.draw_car(self.playerx,self.playery)
         self.things_dodged(self.score)
-
         self.obstacle_starty += self.obstacle_speed
+        """
+        Ning-Hsu 2020/01/28
+        added reward for training
+        """
+        reward = 0.1
 
         if self.obstacle_starty > display_height:
             self.obstacle_starty = 0 - self.obstacle_height
@@ -189,18 +131,33 @@ class Game:
             self.obstacle_speed += 0.5
             # to increase the width of obstacle
             # self.obstacle_width += (self.score * 1.2)
+            """
+            Ning-Hsu 2020/01/28
+            added reward for passing obstacles
+            """
+            reward = 1
         
         if self._is_crash():
             terminal = True
             self.show_crash_msg()
             self.__init__()
             #terminal = True
-            self.score = -1
+            self.score = 0
+            """
+            Ning-Hsu 2020/01/28
+            added neg reward as penalty for crashing
+            """
+            reward = -10
         pygame.display.update()
         clock.tick(self.FPS) # Frames per second
 
         image_data = pygame.surfarray.array3d(pygame.display.get_surface())
-        return image_data, self.score, terminal
+        # return image_data, self.score, terminal
+        """
+        Ning-Hsu 2020/01/28
+        return reward instead of entire score
+        """
+        return image_data, reward, terminal
 
 
 #g = Game()

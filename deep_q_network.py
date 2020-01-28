@@ -4,9 +4,7 @@
 import tensorflow as tf
 import cv2
 import sys
-#sys.path.append("game/")
 sys.path.append("pygame_car_race-master/")
-#import wrapped_flappy_bird as game
 import os
 import race as game
 import random
@@ -17,9 +15,9 @@ GAME = 'car' # the name of the game being played for log files
 ACTIONS = 3 # number of valid actions
 GAMMA = 0.99 # decay rate of past observations
 OBSERVE = 10000. # timesteps to observe before training
-EXPLORE = 300000. # frames over which to anneal epsilon
+EXPLORE = 3000000. # frames over which to anneal epsilon
 FINAL_EPSILON = 0.0001 # final value of epsilon
-INITIAL_EPSILON = 0.1 # starting value of epsilon
+INITIAL_EPSILON = 1 # starting value of epsilon
 REPLAY_MEMORY = 50000 # number of previous transitions to remember
 BATCH = 32 # size of minibatch
 FRAME_PER_ACTION = 1
@@ -107,7 +105,7 @@ def trainNetwork(s, readout, h_fc1, sess):
     # saving and loading networks
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
-    checkpoint = tf.train.get_checkpoint_state("saved_networks/car_model")
+    checkpoint = tf.train.get_checkpoint_state("saved_networks/car_model_init_1_OB_10000_EX_3000000")
     if checkpoint and checkpoint.model_checkpoint_path:
         saver.restore(sess, checkpoint.model_checkpoint_path)
         print("Successfully loaded:", checkpoint.model_checkpoint_path)
@@ -117,7 +115,7 @@ def trainNetwork(s, readout, h_fc1, sess):
     # start training
     epsilon = INITIAL_EPSILON
     t = 0
-    while "flappy bird" != "angry bird":
+    while "car" != "race":
         # choose an action epsilon greedily
         readout_t = readout.eval(feed_dict={s : [s_t]})[0]
         a_t = np.zeros([ACTIONS])
@@ -184,7 +182,7 @@ def trainNetwork(s, readout, h_fc1, sess):
 
         # save progress every 10000 iterations
         if t % 10000 == 0:
-            saver.save(sess, 'saved_networks/car_model/' + 'car' + '-dqn', global_step = t)
+            saver.save(sess, 'saved_networks/car_model_init_1_OB_10000_EX_3000000/' + 'car' + '-dqn', global_step = t)
 
         # print info
         state = ""
