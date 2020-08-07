@@ -1,0 +1,6 @@
+model_checkpoint_path: "car-dqn-4460000"
+all_model_checkpoint_paths: "car-dqn-4420000"
+all_model_checkpoint_paths: "car-dqn-4430000"
+all_model_checkpoint_paths: "car-dqn-4440000"
+all_model_checkpoint_paths: "car-dqn-4450000"
+all_model_checkpoint_paths: "car-dqn-4460000"
