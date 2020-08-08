@@ -3,7 +3,7 @@
 <img src="./imgs/Selection_133.png" width="600">
 
 ## Overview
-This is the final project of GEE9022 (Cloud Computing and Big Data Analytics) in NCTU (National Tsing Hua University). This project demostrates a car race (object dodging) game with Deep-Q-Learning
+This is the final project of GEE9022 (Cloud Computing and Big Data Analytics) in NCTU (National Chiao Tung University). This project demostrates a car race (object dodging) game with Deep-Q-Learning
 
 ## Installation Dependencies:
 * Python 2.7
